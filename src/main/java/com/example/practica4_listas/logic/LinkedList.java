@@ -78,4 +78,31 @@ public class LinkedList<T> {
         return result;
     }
 
+    public T get(int position) {
+
+        Node<T> r=first;
+        int i=0;
+
+        while(r != null) {
+            if(i == position)
+                return r.getData();
+
+            r=r.getNext();
+            i++;
+        }
+
+        return null;
+    }
+
+    public int size() {
+        int total=0;
+        Node<T> r = first;
+
+        while(r!=null) {
+            total++;
+            r = r.getNext();
+        }
+        return total;
+    }
+
 }
