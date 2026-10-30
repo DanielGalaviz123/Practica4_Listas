@@ -1,10 +1,10 @@
+
 package com.example.practica4_listas.ui;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class ControlPanel extends VBox {
@@ -12,70 +12,56 @@ public class ControlPanel extends VBox {
     private Button newButton;
     private Button undoButton;
     private Button hintButton;
-    private Label moves;
+    private Label movesLabel;
 
     public ControlPanel() {
-        setSpacing(18);
-        setPadding(new Insets(20,15,20,15));
+
+        setPrefWidth(165);
+        setMinWidth(165);
+        setSpacing(15);
         setAlignment(Pos.TOP_CENTER);
-        setPrefWidth(150);
+        setPadding(new Insets(25,20,0,20));
         setStyle("-fx-background-color: black;");
 
-        Label title = new Label("Eight Off");
-        title.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+        Label title=new Label("Eight Off");
+        title.setStyle("-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;");
 
-        newButton = new Button("⟳  New");
-        undoButton = new Button("↶  Undo");
-        hintButton = new Button("  Hint");
+        newButton=createButton(" New");
+        undoButton=createButton(" Undo");
+        hintButton=createButton("Hint");
 
-        moves = new Label("Moves: 0");
-        moves.setStyle("-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
+        movesLabel=new Label("Moves: 0");
+        movesLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
 
-        styleButton(newButton);
-        styleButton(undoButton);
-        styleButton(hintButton);
+        VBox.setMargin(newButton,new Insets(65,0,0,0));
 
-        Region space = new Region();
-        space.setMinHeight(20);
-
-        getChildren().addAll(title,space,newButton,undoButton,hintButton,moves);
+        getChildren().addAll(title,newButton,undoButton,hintButton,movesLabel);
     }
 
-    private void styleButton(Button b) {
-        b.setPrefWidth(110);
-        b.setPrefHeight(40);
 
-        b.setStyle("-fx-background-color: #2a2a2a;" + "-fx-text-fill: white;" + "-fx-font-size: 15px;" +
-                "-fx-font-weight: bold;" + "-fx-background-radius: 10;" + "-fx-border-color: #555;" + "-fx-border-radius: 10;"
+    private Button createButton(String text) {
+        Button button=new Button(text);
+
+        button.setPrefSize(122,45);
+        button.setMinSize(122,45);
+
+        button.setStyle("-fx-background-color: #292929;" + "-fx-text-fill: white;" + "-fx-font-size: 14px;" +
+                "-fx-font-weight: bold;" + "-fx-background-radius: 11;" + "-fx-border-color: #484848;" + "-fx-border-radius: 11;"
         );
 
-        b.setOnMouseEntered(e ->
-                b.setStyle("-fx-background-color: #3c3c3c;" + "-fx-text-fill: white;" + "-fx-font-size: 15px;" + "-fx-font-weight: bold;" +
-                        "-fx-background-radius: 10;" + "-fx-border-color: white;" + "-fx-border-radius: 10;"
-                )
-        );
-
-        b.setOnMouseExited(e ->
-                b.setStyle("-fx-background-color: #2a2a2a;" + "-fx-text-fill: white;" + "-fx-font-size: 15px;" +
-                        "-fx-font-weight: bold;" + "-fx-background-radius: 10;" + "-fx-border-color: #555;" +
-                        "-fx-border-radius: 10;"
-                )
-        );
+        return button;
     }
 
-    public void updateMoves(int total) {
-        moves.setText("Moves: " + total);
+
+    public void setActions(Runnable newGame,Runnable undo,Runnable hint) {
+
+        newButton.setOnAction(e -> newGame.run());
+        undoButton.setOnAction(e -> undo.run());
+        hintButton.setOnAction(e -> hint.run());
     }
 
-    public Button getNewButton() {
-        return newButton;
-    }
 
-    public Button getUndoButton() {
-        return undoButton;
-    }
-
-    public Button getHintButton() {
-        return hintButton;
+    public void updateMoves(int moves) {
+        movesLabel.setText("Moves: " + moves);
     }
 }

@@ -96,7 +96,7 @@ public class GameFlow {
 
     public void deal() {
 
-        // repartir las cartas
+        // repartir las cartas 48
         for (int i = 0; i < 6; i++) {
             for(int j=0; j<8; j++) {
                 Card card=deck.removeFirst();
@@ -129,6 +129,7 @@ public class GameFlow {
     }
 
     private boolean sameSuit(Card a, Card b) {
+
         return a.getSuit().equals(b.getSuit());
     }
 
@@ -158,7 +159,6 @@ public class GameFlow {
 
     private int maxCards(int from, int to) {
         int libres=0;
-        int vacias = 0;
 
         for(int i = 0; i < 8; i++) {
             if (reserves[i] == null) {
@@ -166,22 +166,12 @@ public class GameFlow {
             }
         }
 
-        for (int i=0; i<8; i++) {
-            if(i != from && i != to && columns[i].size() == 0) {
-                vacias++;
-            }
-        }
+       return libres+1;
 
-        int max=libres+1;
-
-        for(int i=0; i<vacias; i++) {
-            max = max*2;
-        }
-
-        return max;
     }
 
     public boolean validMove(int from,int to) {
+
         return validMove(from,to,1);
     }
 
@@ -225,7 +215,13 @@ public class GameFlow {
 
             Card top = getTop(to);
 
-            if (top != null) {
+            // columna vacia, solo reyes
+            if (top == null) {
+                if(lastCard.getValue() != 13) {
+                    return false;
+                }
+            }
+            else {
                 if (!sameSuit(top,lastCard)) {
                     return false;
                 }
@@ -270,6 +266,7 @@ public class GameFlow {
 
         return sameSuit(card,top) && card.getValue() == top.getValue()+1;
     }
+
 
 
     private Card removeCard(int position) {
